@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load custom_filters %}
+
+{% block title %}Bar Management System - Cart{% endblock %}
+
+{% block content %}
+    <h1>Your Cart</h1>
+    {% if drinks %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for drink in drinks %}
+                    <tr>
+                        <td>{{ drink.name }}</td>
+                        <td>{{ drink_quantities|default_if_none:"{}"|get_item:drink.pk }}</td>
+                        <td>${{ drink.price|floatformat:2 }} * {{ drink_quantities|default_if_none:"{}"|get_item:drink.pk }} = ${{ drink.price|floatformat:2 }} * {{ drink_quantities|default_if_none:"{}"|get_item:drink.pk|add:0 }}</td>
+                        <td>
+                            <form method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="drink_id_to_remove" value="{{ drink.pk }}">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <form method="post" action="{% url 'complete_transaction' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Complete Transaction</button>
+        </form>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+    <p>
+        <a class="btn btn-primary" href="{% url 'create-order' %}">Add More Drinks</a>
+    </p>
+
+
+    <!-- cart.html -->
+
+<!-- ... (existing content) -->
+
+{% if invoice_id %}
+<p>
+    <a class="btn btn-primary" href="{% url 'view_invoice' invoice_id=invoice_id %}">View Invoice</a>
+</p>
+{% endif %}
+
+{% endblock %}

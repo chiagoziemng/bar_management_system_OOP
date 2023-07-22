@@ -1,0 +1,27 @@
+<!-- create_order.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bar Management System - Create Order</title>
+</head>
+<body>
+    <h1>Create Order</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="drink_id">Select Drink:</label>
+        <select name="drink_id" id="drink_id">
+            {% for drink in drinks %}
+                <option value="{{ drink.pk }}">{{ drink.name }} - {{ drink.price }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <label for="quantity">Quantity:</label>
+        <input type="number" name="quantity" value="1" min="1">
+        <br>
+        <button type="submit">Add to Cart</button>
+    </form>
+    <p>
+        <a class="btn btn-secondary" href="{% url 'drink_list' %}">Back to Drinks List</a>
+    </p>
+</body>
+</html>

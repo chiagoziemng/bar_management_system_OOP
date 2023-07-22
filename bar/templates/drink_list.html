@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Bar Management System - Drinks List{% endblock %}
+
+{% block content %}
+    <h1>Drinks List</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity in Stock</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for drink in drinks %}
+            <tr>
+                <td>{{ drink.name }}</td>
+                <td>{{ drink.price }}</td>
+                <td>{{ drink.quantity_in_stock }}</td>
+                <td>     <a href="{% url 'add_drink_quantity' drink_id=drink.pk %}">[Add Quantity]</a>
+                    <a href="{% url 'reduce_drink_quantity' drink_id=drink.pk %}">[Reduce Quantity]</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        <a class="btn btn-primary" href="{% url 'cart' %}">Go to Cart</a>
+    </p>
+    <p>
+        <a class="btn btn-primary" href="{% url 'create_category' %}">Create Category</a>
+        <a class="btn btn-primary" href="{% url 'add_drink' %}">Add Drink</a>
+    </p>
+    <p>
+        <a class="btn btn-primary" href="{% url 'all_categories' %}">All Categories</a>
+    </p>
+    
+{% endblock %}
